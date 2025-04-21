@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff4d4d, white);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .welcome-box {
+            text-align: center;
+            color: white;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 0.3s;
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-size: 3.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+        .blur-effect {
+            filter: blur(5px);
+            transition: filter 0.5s;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            width: 350px;
+            text-align: center;
+            animation: popupFadeIn 0.4s ease-out;
+        }
+        @keyframes popupFadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        .popup h2 {
+            color: #ff4d4d;
+            margin-top: 0;
+        }
+        .popup input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        .popup input:focus {
+            border-color: #ff4d4d;
+            outline: none;
+        }
+        .popup button {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .popup button:hover {
+            background: #e60000;
+            transform: translateY(-2px);
+        }
+        .password-strength {
+            font-size: 0.8rem;
+            color: #666;
+            text-align: left;
+            margin-top: -5px;
+            margin-bottom: 10px;
+        }
+        .weak { color: #ff4d4d; }
+        .medium { color: #ffa500; }
+        .strong { color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <div class="welcome-box" id="welcomeBox">
+        <h1>Welcome!</h1>
+        <p>Join us by signing up below.</p>
+    </div>
+
+    <div class="popup" id="signupPopup">
+        <h2>Create Account</h2>
+        <input type="email" id="userEmail" placeholder="Your Email" required>
+        <input type="password" id="userPassword" placeholder="Create Password" required>
+        <div id="passwordStrength" class="password-strength"></div>
+        <button onclick="verifyAndProceed()">Continue</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.from("#welcomeBox", { opacity: 0, y: 30, duration: 1, ease: "power3.out" });
+
+            setTimeout(() => {
+                document.getElementById('welcomeBox').classList.add('blur-effect');
+                document.getElementById('signupPopup').style.display = 'block';}, 2000);
+        });
+
+        document.getElementById('userPassword').addEventListener('input', function() {
+            const strengthText = document.getElementById('passwordStrength');
+            const password = this.value;
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^A-Za-z0-9]/)) strength++;
+
+            strengthText.textContent = 
+                strength === 0 ? '' :
+                strength < 2 ? 'Weak password' :
+                strength < 4 ? 'Medium strength' : 'Strong password';
+            
+            strengthText.className = 'password-strength ' + 
+                (strength < 2 ? 'weak' : strength < 4 ? 'medium' : 'strong');
+        });
+
+        function verifyAndProceed() {
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPassword').value;
+
+            if (!email.includes('@') || !email.includes('.')) {
+                alert("Please enter a valid email!");
+                return;
+            }
+
+            if (password.length < 8) {
+                alert("Password must be at least 8 characters!");
+                return;
+            }
+
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userPassword', password);
+
+            alert(`Verification email sent to: ${email}\n(Simulated for demo)`);
+            window.location.href = "register.html";
+        }
+
+        // Send data to backend when registration form is submitted
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const userData = {
+                name: document.getElementById('fullName').value,
+                registrationNumber: document.getElementById('regNumber').value,
+                email: localStorage.getItem('userEmail') || "not_provided@example.com"
+            };
+
+            const response = await fetch('http://localhost:8080/api/students', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+
+            if (response.ok) {
+                window.location.href = "success.html";
+            } else {
+                alert("Failed to register student. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>

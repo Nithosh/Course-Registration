@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff4d4d, white);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 0.6s forwards 0.3s;
+        }
+        @keyframes fadeInUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+        h1 {
+            color: #ff4d4d;
+            margin-bottom: 20px;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #ff4d4d;
+            outline: none;
+        }
+        button {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #e60000;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container" id="formContainer">
+        <h1>Register Now</h1>
+        <form id="registrationForm">
+            <input type="text" id="fullName" placeholder="Full Name" required>
+            <input type="text" id="regNumber" placeholder="Registration Number" required>
+            <select id="course" required>
+                <option value="" disabled selected>Select Course</option>
+                <option value="Computer Science">Java Programming</option>
+                <option value="Engineering">Spring Boot</option>
+                <option value="Business">MySQL Database</option>
+            </select>
+            <button type="submit">Continue</button>
+        </form>
+    </div>
+
+    <script>
+        // Animate form entrance
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('formContainer').style.opacity = '1';
+            }, 300);
+        });
+
+        // Save data and redirect
+        document.getElementById('registrationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const userData = {
+                name: document.getElementById('fullName').value,
+                regNumber: document.getElementById('regNumber').value,
+                course: document.getElementById('course').value,
+                email: localStorage.getItem('userEmail') || "Not provided" // From index.html
+            };
+
+            // Save to localStorage
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            // Optional: Add a loading animation before redirect
+            const button = e.target.querySelector('button');
+            button.innerHTML = 'Processing...';
+            button.style.backgroundColor = '#4CAF50';
+
+            setTimeout(() => {
+                window.location.href = "success.html";
+            }, 1000); // Simulate processing delay
+
+        });
+        
+    </script>
+  <script> 
+ document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const userData = {
+        name: document.getElementById('fullName').value,
+        registrationNumber: document.getElementById('regNumber').value,
+        email: localStorage.getItem('userEmail') || "not_provided@example.com"
+    };
+
+    const response = await fetch('http://localhost:8080/h2-console', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+    });
+
+    if (response.ok) {
+        window.location.href = "success.html";
+    } else {
+        alert("Failed to register student. Please try again.");
+    }
+});
+</script>
+
+    
+</body>
+</html>

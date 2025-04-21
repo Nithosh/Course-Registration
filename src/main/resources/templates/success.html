@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff4d4d, white);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .success-box {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+        }
+        h1 {
+            color: #ff4d4d;
+        }
+        .tick {
+            font-size: 5rem;
+            color: #4CAF50;
+            margin: 20px 0;
+        }
+        button {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #e60000;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-box">
+        <div class="tick">✓</div>
+        <h1>Registration Successful!</h1>
+        <p>Your details have been submitted successfully.</p>
+        <button onclick="window.location.href='index.html'">Return to Home</button>
+    </div>
+</body>
+</html>
