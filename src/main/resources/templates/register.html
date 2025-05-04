@@ -73,44 +73,39 @@
             <input type="text" id="regNumber" placeholder="Registration Number" required>
             <select id="course" required>
                 <option value="" disabled selected>Select Course</option>
-                <option value="Computer Science">Java Programming</option>
-                <option value="Engineering">Spring Boot</option>
-                <option value="Business">MySQL Database</option>
-            </select>
+                <option value="Java Programming">Java Programming</option>
+                <option value="Spring Boot">Spring Boot</option>
+                <option value="MySQL Database">MySQL Database</option>
+            </select>            
             <button type="submit">Continue</button>
         </form>
     </div>
 
     <script>
-        // Animate form entrance
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.getElementById('formContainer').style.opacity = '1';
             }, 300);
         });
 
-        // Save data and redirect
         document.getElementById('registrationForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
             const userData = {
-                name: document.getElementById('fullName').value,
-                regNumber: document.getElementById('regNumber').value,
-                course: document.getElementById('course').value,
-                email: localStorage.getItem('userEmail') || "Not provided" // From index.html
+            name: document.getElementById('fullName').value,
+            registrationNumber: document.getElementById('regNumber').value,
+            course: document.getElementById('course').value, 
+            email: localStorage.getItem('userEmail') || "not_provided@example.com"
             };
 
-            // Save to localStorage
             localStorage.setItem('userData', JSON.stringify(userData));
-
-            // Optional: Add a loading animation before redirect
             const button = e.target.querySelector('button');
             button.innerHTML = 'Processing...';
             button.style.backgroundColor = '#4CAF50';
 
             setTimeout(() => {
                 window.location.href = "success.html";
-            }, 1000); // Simulate processing delay
+            }, 1000); 
 
         });
         
@@ -122,10 +117,11 @@
     const userData = {
         name: document.getElementById('fullName').value,
         registrationNumber: document.getElementById('regNumber').value,
+        course: document.getElementById('course').value, 
         email: localStorage.getItem('userEmail') || "not_provided@example.com"
     };
 
-    const response = await fetch('http://localhost:8080/h2-console', {
+    const response = await fetch('http://localhost:8080/api/students', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
