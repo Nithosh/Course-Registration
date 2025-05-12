@@ -4,59 +4,88 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign Up</title>
+  <img src="/images/2.jpeg" alt="" />
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #ff4d4d, white);
-      margin: 0; padding: 0; height: 100vh; overflow: hidden;
-    }
-    .welcome-box {
-      position: absolute; top: 30%; width: 100%; text-align: center;
-      color: white; opacity: 0; transform: translateY(20px);
-      animation: fadeInUp 1s forwards 0.3s; z-index: 1;
-    }
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .blur-effect {
-      filter: blur(5px); transition: filter 0.5s;
-    }
-    .popup {
-      display: none; position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%); background: white;
-      padding: 30px; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-      width: 350px; text-align: center; z-index: 2;
-      animation: popupFadeIn 0.4s ease-out;
-    }
-    @keyframes popupFadeIn {
-      from { opacity: 0; transform: translate(-50%, -45%); }
-      to   { opacity: 1; transform: translate(-50%, -50%); }
-    }
-    input, button {
-      width: 100%; padding: 12px; margin: 10px 0;
-      font-size: 1rem; border-radius: 5px; border: 1px solid #ddd;
-      box-sizing: border-box;
-    }
-    button {
-      background: #ff4d4d; color: white; border: none;
-      cursor: pointer; transition: background 0.3s, transform 0.3s;
-    }
-    button:hover {
-      background: #e60000; transform: translateY(-2px);
-    }
-    .error {
-      color: #ff4d4d; font-size: 0.9rem; margin-top: 5px; min-height: 1em;
-    }
-    .toggle {
-      font-size: 0.9rem; color: #666;
-    }
-    .toggle a {
-      color: #ff4d4d; text-decoration: none; font-weight: bold;
-    }
-    .toggle a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background: url('2.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0; padding: 0; height: 100vh; overflow: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+    animation: fadeInOverlay 1.5s ease-in forwards;
+    z-index: 0;
+  }
+
+  @keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .welcome-box {
+    position: absolute; top: 30%; width: 100%; text-align: center;
+    color: white; opacity: 0; transform: translateY(20px);
+    animation: fadeInUp 1s forwards 0.3s; z-index: 1;
+  }
+
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .blur-effect {
+    filter: blur(5px); transition: filter 0.5s;
+  }
+
+  .popup {
+    display: none; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); background: white;
+    padding: 30px; border-radius: 15px; box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    width: 350px; text-align: center; z-index: 2;
+    animation: popupFadeIn 0.4s ease-out;
+  }
+
+  @keyframes popupFadeIn {
+    from { opacity: 0; transform: translate(-50%, -45%); }
+    to   { opacity: 1; transform: translate(-50%, -50%); }
+  }
+
+  input, button {
+    width: 100%; padding: 12px; margin: 10px 0;
+    font-size: 1rem; border-radius: 5px; border: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+
+  button {
+    background: hsl(23, 98%, 49%); color: white; border: none;
+    cursor: pointer; transition: background 0.3s, transform 0.3s;
+  }
+
+  button:hover {
+    background: rgb(230, 165, 0); transform: translateY(-2px);
+  }
+
+  .error {
+    color: hsl(23, 98%, 49%)#f14313; font-size: 0.9rem; margin-top: 5px; min-height: 1em;
+  }
+
+  .toggle {
+    font-size: 0.9rem; color: #666;
+  }
+
+  .toggle a {
+    color: lab(58.57% 65.05 69.44); text-decoration: none; font-weight: bold;
+  }
+
+  .toggle a:hover {
+    text-decoration: underline;
+  }
+</style>
 </head>
 <body>
   <div class="welcome-box" id="welcomeBox">
