@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Student Registration</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ff4d4d, white);
+      margin: 0; padding: 0; height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .form-container {
+      background: white; padding: 30px; border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      width: 400px; text-align: center;
+    }
+    input, select, button {
+      width: 100%; padding: 12px; margin: 10px 0;
+      border: 1px solid #ddd; border-radius: 5px;
+      font-size: 1rem; box-sizing: border-box;
+    }
+    button {
+      background: #ff4d4d; color: white; border: none;
+      cursor: pointer; transition: all 0.3s;
+    }
+    button:hover {
+      background: #e60000; transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Register Now</h1>
+    <form id="registrationForm">
+      <input type="text" id="fullName"    placeholder="Full Name"           required>
+      <input type="text" id="regNumber"   placeholder="Registration Number"  required>
+      <select id="course" required>
+        <option value="" disabled selected>Select Course</option>
+        <option>Java Programming</option>
+        <option>Spring Boot</option>
+        <option>MySQL Database</option>
+      </select>
+      <button type="submit">Continue</button>
+    </form>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const email  = params.get('email');
+    if (!email) {
+      alert('No email provided – please login first.');
+      window.location.href = 'login.html';
+    }
+
+    document.getElementById('registrationForm').addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const name   = document.getElementById('fullName').value.trim();
+      const regNo  = document.getElementById('regNumber').value.trim();
+      const course = document.getElementById('course').value;
+
+      try {
+        const resp = await fetch('/api/students', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            registrationNumber: regNo,
+            course,
+            email
+          })
+        });
+        if (!resp.ok) {
+          const msg = await resp.text();
+          throw new Error(msg || 'Registration failed');
+        }
+        window.location.href = 'success.html';
+      } catch (ex) {
+        alert('Error: ' + ex.message);
+      }
+    });
+  </script>
+</body>
+</html>
